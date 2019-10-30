@@ -2,6 +2,8 @@
 
 A [Fathom Analytics](https://usefathom.com/) library for environments with client-side routing.
 
+Extracted from the [StaticKit](https://statickit.com) website.
+
 ## Installation
 
 Run the following to install in your project:
