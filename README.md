@@ -14,35 +14,12 @@ npm i fathom-client
 
 ## Motivation
 
-The standard installation flow for Fathom is to drop their snippet on your page, which will automatically load the library and track a pageview:
-
-```html
-<!-- Fathom - simple website analytics - https://usefathom.com -->
-<script>
-  (function(f, a, t, h, o, m) {
-    a[h] =
-      a[h] ||
-      function() {
-        (a[h].q = a[h].q || []).push(arguments);
-      };
-    (o = f.createElement('script')), (m = f.getElementsByTagName('script')[0]);
-    o.async = 1;
-    o.src = t;
-    o.id = 'fathom-script';
-    m.parentNode.insertBefore(o, m);
-  })(document, window, '//cdn.usefathom.com/tracker.js', 'fathom');
-  fathom('set', 'siteId', 'XXXXXXXX');
-  fathom('trackPageview');
-</script>
-<!-- / Fathom -->
-```
-
-Applying this approach gets tricky where:
+The standard installation flow for Fathom is to drop their snippet on your page, which will automatically load the library and track a pageview. This approach works great for server-rendered sites with full page refreshes, but gets tricky when:
 
 - Routing happens on the client-side (e.g. an SPA)
-- The DOM is abstracted away (e.g. a fully React-based site like Next.js)
+- The DOM is abstracted away (e.g. Next.js)
 
-This library provides an interface you can use at various points in your page lifecycle to orchestrate Fathom calls:
+This library provides an interface you can use to orchestrate Fathom calls at various points in your page lifecycle:
 
 ```js
 import Fathom from 'fathom-client';
