@@ -61,6 +61,99 @@ const onSignUp = () => {
 };
 ```
 
+## Usage
+
+### Next.js
+
+Create an `_app.js` file in your `pages` directory, [like this](https://nextjs.org/docs#custom-app):
+
+```js
+import React from 'react';
+import App from 'next/app';
+
+class MyApp extends App {
+  render() {
+    const { Component, pageProps } = this.props;
+    return <Component {...pageProps} />;
+  }
+}
+
+export default MyApp;
+```
+
+Then, add a wrapper component with an effect to load Fathom on page load:
+
+```diff
+- import React from 'react'
++ import React, { useEffect } from 'react'
++ import Fathom from 'fathom-client'
+  import App from 'next/app'
+
++ function Layout(props) {
++   useEffect(() => {
++     if (process.env.NODE_ENV === 'production') {
++       Fathom.load();
++       Fathom.setSiteId('<your-site-id>');
++       Fathom.trackPageview();
++     }
++   }, []);
++
++   return <div {...props} />;
++ }
+
+  class MyApp extends App {
+    render() {
+      const { Component, pageProps } = this.props
+-     return <Component {...pageProps} />
++     return (
++       <Layout>
++         <Component {...pageProps}></Component>
++       </Layout>
++     )
+    }
+  }
+
+  export default MyApp
+```
+
+Finally, track a pageview any time the route changes:
+
+```diff
+  import React, { useEffect } from 'react'
+  import Fathom from 'fathom-client'
+  import App from 'next/app'
++ import Router from 'next/router';
+
++ Router.events.on('routeChangeComplete', () => {
++   Fathom.trackPageview();
++ });
+
+  function Layout(props) {
+    useEffect(() => {
+      if (process.env.NODE_ENV === 'production') {
+        Fathom.load();
+        Fathom.setSiteId('<your-site-id>');
+        Fathom.trackPageview();
+      }
+    }, []);
+
+    return <div {...props} />;
+  }
+
+  class MyApp extends App {
+    render() {
+      const { Component, pageProps } = this.props
+      return (
+        <Layout>
+          <Component {...pageProps}></Component>
+        </Layout>
+      )
+    }
+  }
+
+  export default MyApp
+```
+
 ## Releasing
 
 Run the following to publish a new version:
