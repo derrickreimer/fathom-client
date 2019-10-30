@@ -1,6 +1,6 @@
 # Fathom Client [![CircleCI](https://circleci.com/gh/unstacked/fathom-client.svg?style=svg)](https://circleci.com/gh/unstacked/fathom-client)
 
-A [Fathom Analytics](https://usefathom.com/) wrapper for environments with client-side routing.
+A [Fathom Analytics](https://usefathom.com/) library for environments with client-side routing.
 
 ## Installation
 
