@@ -1,11 +1,9 @@
-const fathom = () => {
+const ensureFathom = () => {
   window.fathom =
     window.fathom ||
     function() {
       (window.fathom.q = window.fathom.q || []).push(arguments);
     };
-
-  return window.fathom;
 };
 
 const load = () => {
@@ -24,11 +22,18 @@ const load = () => {
 };
 
 const setSiteId = siteId => {
-  fathom('set', 'siteId', siteId);
+  ensureFathom();
+  window.fathom('set', 'siteId', siteId);
 };
 
 const trackPageview = () => {
-  fathom('trackPageview');
+  ensureFathom();
+  window.fathom('trackPageview');
 };
 
-export default { load, setSiteId, trackPageview };
+const trackGoal = (id, cents) => {
+  ensureFathom();
+  window.fathom('trackGoal', id, cents);
+};
+
+export default { load, setSiteId, trackPageview, trackGoal };
