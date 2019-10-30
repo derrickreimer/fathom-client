@@ -2,6 +2,9 @@
   "name": "fathom-client",
   "version": "0.0.0",
   "description": "A simple wrapper around the Fathom Analytics library",
+  "keywords": [
+    "analytics"
+  ],
   "homepage": "https://github.com/unstacked/fathom-client",
   "bugs": {
     "url": "https://github.com/unstacked/fathom-client/issues"
@@ -12,9 +15,12 @@
   },
   "license": "MIT",
   "author": "Derrick Reimer",
-  "files": [],
-  "main": "dist/statickit-react.cjs.js",
-  "module": "dist/statickit-react.esm.js",
+  "files": [
+    "dist/fathom-client.cjs.js",
+    "dist/fathom-client.esm.js"
+  ],
+  "main": "dist/fathom-client.cjs.js",
+  "module": "dist/fathom-client.esm.js",
   "scripts": {
     "build": "rollup -c",
     "prepare": "npm run build",
