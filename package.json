@@ -16,11 +16,13 @@
   "license": "MIT",
   "author": "Derrick Reimer",
   "files": [
-    "dist/**/*.{js|ts}"
+    "dist/fathom-client.cjs.js",
+    "dist/fathom-client.esm.js",
+    "dist/index.d.ts"
   ],
   "main": "dist/fathom-client.cjs.js",
   "module": "dist/fathom-client.esm.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run build:types && npm run build:js",
     "build:js": "rollup -c",
