@@ -1,4 +1,4 @@
-import Fathom from '../src';
+import * as Fathom from '../src';
 
 const args = function() {
   return arguments;

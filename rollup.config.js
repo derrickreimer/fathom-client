@@ -1,32 +1,31 @@
 import babel from 'rollup-plugin-babel';
-import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
+import pkg from './package.json';
+
+const extensions = ['.js', '.ts'];
 
 const plugins = [
-  nodeResolve(),
-  commonjs({
-    include: 'node_modules/**'
-  }),
   babel({
-    exclude: 'node_modules/**'
+    extensions,
+    include: ['./src/**/*']
+  }),
+  nodeResolve({
+    extensions,
+    browser: true
   })
 ];
 
-export default [
-  {
-    input: 'src/index.js',
-    plugins: plugins,
-    output: {
+export default {
+  input: './src/index.ts',
+  plugins: plugins,
+  output: [
+    {
       format: 'cjs',
-      file: __dirname + '/dist/fathom-client.cjs.js'
-    }
-  },
-  {
-    input: 'src/index.js',
-    plugins: plugins,
-    output: {
+      file: pkg.main
+    },
+    {
       format: 'esm',
-      file: __dirname + '/dist/fathom-client.esm.js'
+      file: pkg.module
     }
-  }
-];
+  ]
+};
