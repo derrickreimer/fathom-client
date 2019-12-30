@@ -16,8 +16,7 @@
   "license": "MIT",
   "author": "Derrick Reimer",
   "files": [
-    "dist/fathom-client.cjs.js",
-    "dist/fathom-client.esm.js"
+    "dist/**/*.{js|ts}"
   ],
   "main": "dist/fathom-client.cjs.js",
   "module": "dist/fathom-client.esm.js",
