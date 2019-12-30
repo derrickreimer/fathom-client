@@ -9,7 +9,7 @@ Extracted from the [StaticKit](https://statickit.com) website.
 Run the following to install in your project:
 
 ```
-npm i fathom-client
+npm install fathom-client
 ```
 
 ## Motivation
@@ -22,7 +22,7 @@ The standard installation flow for Fathom is to drop their snippet on your page,
 This library provides an interface you can use to orchestrate Fathom calls at various points in your page lifecycle:
 
 ```js
-import Fathom from 'fathom-client';
+import * as Fathom from 'fathom-client';
 
 // Upon initial page load...
 Fathom.load();
@@ -46,7 +46,7 @@ const onSignUp = () => {
 
 Create an `_app.js` file in your `pages` directory, [like this](https://nextjs.org/docs#custom-app):
 
-```js
+```jsx
 import React from 'react';
 import App from 'next/app';
 
@@ -65,8 +65,13 @@ Then, add a wrapper component with an effect to load Fathom on page load:
 ```diff
 - import React from 'react'
 + import React, { useEffect } from 'react'
-+ import Fathom from 'fathom-client'
++ import * as Fathom from 'fathom-client'
++ import Router from 'next/router'
   import App from 'next/app'
+
++ Router.events.on('routeChangeComplete', () => {
++   Fathom.trackPageview();
++ });
 
 + function Layout(props) {
 +   useEffect(() => {
@@ -89,44 +94,6 @@ Then, add a wrapper component with an effect to load Fathom on page load:
 +         <Component {...pageProps}></Component>
 +       </Layout>
 +     )
-    }
-  }
-
-  export default MyApp
-```
-
-Finally, track a pageview any time the route changes:
-
-```diff
-  import React, { useEffect } from 'react'
-  import Fathom from 'fathom-client'
-  import App from 'next/app'
-+ import Router from 'next/router';
-
-+ Router.events.on('routeChangeComplete', () => {
-+   Fathom.trackPageview();
-+ });
-
-  function Layout(props) {
-    useEffect(() => {
-      if (process.env.NODE_ENV === 'production') {
-        Fathom.load();
-        Fathom.setSiteId('<your-site-id>');
-        Fathom.trackPageview();
-      }
-    }, []);
-
-    return <div {...props} />;
-  }
-
-  class MyApp extends App {
-    render() {
-      const { Component, pageProps } = this.props
-      return (
-        <Layout>
-          <Component {...pageProps}></Component>
-        </Layout>
-      )
     }
   }
 
