@@ -47,57 +47,29 @@ const onSignUp = () => {
 Create an `_app.js` file in your `pages` directory, [like this](https://nextjs.org/docs#custom-app):
 
 ```jsx
-import React from 'react';
-import App from 'next/app';
+import React, { useEffect } from 'react';
+import Router from 'next/router';
+import * as Fathom from 'fathom-client';
 
-class MyApp extends App {
-  render() {
-    const { Component, pageProps } = this.props;
-    return <Component {...pageProps} />;
-  }
+// Record a pageview when route changes
+Router.events.on('routeChangeComplete', () => {
+  Fathom.trackPageview();
+});
+
+function App({ Component, pageProps }) {
+  // Initialize Fathom when the app loads
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      Fathom.load();
+      Fathom.setSiteId('ZFEWBXJZ');
+      Fathom.trackPageview();
+    }
+  }, []);
+
+  return <Component {...pageProps} />;
 }
 
-export default MyApp;
-```
-
-Then, add a wrapper component with an effect to load Fathom on page load:
-
-```diff
-- import React from 'react'
-+ import React, { useEffect } from 'react'
-+ import * as Fathom from 'fathom-client'
-+ import Router from 'next/router'
-  import App from 'next/app'
-
-+ Router.events.on('routeChangeComplete', () => {
-+   Fathom.trackPageview();
-+ });
-
-+ function Layout(props) {
-+   useEffect(() => {
-+     if (process.env.NODE_ENV === 'production') {
-+       Fathom.load();
-+       Fathom.setSiteId('<your-site-id>');
-+       Fathom.trackPageview();
-+     }
-+   }, []);
-+
-+   return <div {...props} />;
-+ }
-
-  class MyApp extends App {
-    render() {
-      const { Component, pageProps } = this.props
--     return <Component {...pageProps} />
-+     return (
-+       <Layout>
-+         <Component {...pageProps}></Component>
-+       </Layout>
-+     )
-    }
-  }
-
-  export default MyApp
+export default App;
 ```
 
 ## Releasing
