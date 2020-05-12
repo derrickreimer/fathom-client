@@ -54,6 +54,20 @@ describe('trackPageview', () => {
       Fathom.trackPageview();
     });
   });
+
+  it('calls the fathom function with arguments if loaded', () => {
+    return new Promise(resolve => {
+      window.fathom = (...args) => {
+        expect(args).toStrictEqual([
+          'trackPageview',
+          { url: 'https://bobheadxi.dev' }
+        ]);
+        resolve();
+      };
+
+      Fathom.trackPageview({ url: 'https://bobheadxi.dev' });
+    });
+  });
 });
 
 describe('trackGoal', () => {

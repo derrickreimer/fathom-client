@@ -38,9 +38,15 @@ export const setSiteId = (siteId: string): void => {
   fathom('set', 'siteId', siteId);
 };
 
-export const trackPageview = (): void => {
+type PageViewOptions = {
+  url?: string;
+  referrer?: string;
+}
+
+export const trackPageview = (opts?: PageViewOptions): void => {
   let fathom = getFathom();
-  fathom('trackPageview');
+  if (opts) fathom('trackPageview', opts);
+  else fathom('trackPageview');
 };
 
 export const trackGoal = (id: string, cents: number) => {
