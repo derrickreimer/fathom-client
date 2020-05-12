@@ -9,6 +9,12 @@ beforeEach(() => {
 });
 
 describe('load', () => {
+  beforeEach(() => {
+    // reset the script node before each test
+    const script = document.getElementById('fathom-script');
+    if (script) script.remove();
+  });
+
   it('injects the Fathom script', () => {
     const firstScript = document.createElement('script');
     document.body.appendChild(firstScript);
@@ -16,6 +22,22 @@ describe('load', () => {
 
     const fathomScript = document.getElementById('fathom-script');
     expect(fathomScript.src).toBe('http://cdn.usefathom.com/tracker.js');
+    expect(typeof window.fathom).toBe('function');
+  });
+
+  it('injects the Fathom script with options', () => {
+    const firstScript = document.createElement('script');
+    document.body.appendChild(firstScript);
+    Fathom.load(undefined, {
+      auto: false,
+      includedDomains: ['bobheadxi.dev']
+    });
+
+    const fathomScript = document.getElementById('fathom-script');
+    expect(fathomScript.src).toBe('http://cdn.usefathom.com/tracker.js');
+    expect(fathomScript.getAttribute('included-domains')).toBe('bobheadxi.dev');
+    expect(fathomScript.getAttribute('auto')).toBe('false');
+    expect(fathomScript.getAttribute('honor-dnt')).toBe(null);
     expect(typeof window.fathom).toBe('function');
   });
 });
