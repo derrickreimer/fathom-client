@@ -18,7 +18,7 @@ const getFathom = (): Fathom => {
 };
 
 // refer to https://usefathom.com/support/tracking-advanced
-type LoadOptions = {
+export type LoadOptions = {
   auto?: boolean;
   honorDNT?: boolean;
   canonical?: boolean;
@@ -56,7 +56,7 @@ export const setSiteId = (siteId: string): void => {
   fathom('set', 'siteId', siteId);
 };
 
-type PageViewOptions = {
+export type PageViewOptions = {
   url?: string;
   referrer?: string;
 }
