@@ -19,6 +19,7 @@ const getFathom = (): Fathom => {
 
 // refer to https://usefathom.com/support/tracking-advanced
 export type LoadOptions = {
+  url?: string;
   auto?: boolean;
   honorDNT?: boolean;
   canonical?: boolean;
@@ -27,7 +28,7 @@ export type LoadOptions = {
   spa?: 'auto' | 'history' | 'hash';
 }
 
-export const load = (url = '//cdn.usefathom.com/tracker.js', opts?: LoadOptions): void => {
+export const load = (siteId: string, opts?: LoadOptions): void => {
   window.fathom =
     window.fathom ||
     function() {
@@ -37,9 +38,10 @@ export const load = (url = '//cdn.usefathom.com/tracker.js', opts?: LoadOptions)
   let tracker = document.createElement('script');
   let firstScript = document.getElementsByTagName('script')[0];
 
-  tracker.async = true;
-  tracker.src = url;
   tracker.id = 'fathom-script';
+  tracker.async = true;
+  tracker.setAttribute('site', siteId);
+  tracker.src = (opts && opts.url) ? opts.url : 'https://cdn.usefathom.com/script.js';
   if (opts) {
     if (opts.auto !== undefined) tracker.setAttribute('auto', `${opts.auto}`);
     if (opts.honorDNT !== undefined) tracker.setAttribute('honor-dnt', `${opts.honorDNT}`);

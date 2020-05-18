@@ -21,20 +21,21 @@ describe('load', () => {
     Fathom.load();
 
     const fathomScript = document.getElementById('fathom-script');
-    expect(fathomScript.src).toBe('http://cdn.usefathom.com/tracker.js');
+    expect(fathomScript.src).toBe('https://cdn.usefathom.com/script.js');
     expect(typeof window.fathom).toBe('function');
   });
 
   it('injects the Fathom script with options', () => {
     const firstScript = document.createElement('script');
     document.body.appendChild(firstScript);
-    Fathom.load(undefined, {
+    Fathom.load('abcde123', {
+      url: 'https://bobheadxi.dev/fathom.js',
       auto: false,
       includedDomains: ['bobheadxi.dev']
     });
 
     const fathomScript = document.getElementById('fathom-script');
-    expect(fathomScript.src).toBe('http://cdn.usefathom.com/tracker.js');
+    expect(fathomScript.src).toBe('https://bobheadxi.dev/fathom.js');
     expect(fathomScript.getAttribute('included-domains')).toBe('bobheadxi.dev');
     expect(fathomScript.getAttribute('auto')).toBe('false');
     expect(fathomScript.getAttribute('honor-dnt')).toBe(null);
