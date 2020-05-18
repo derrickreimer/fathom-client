@@ -63,8 +63,7 @@ export type PageViewOptions = {
 
 export const trackPageview = (opts?: PageViewOptions): void => {
   let fathom = getFathom();
-  if (opts) fathom('trackPageview', opts);
-  else fathom('trackPageview');
+  opts ? fathom('trackPageview', opts) : fathom('trackPageview');
 };
 
 export const trackGoal = (id: string, cents: number) => {
