@@ -25,8 +25,7 @@ This library provides an interface you can use to orchestrate Fathom calls at va
 import * as Fathom from 'fathom-client';
 
 // Upon initial page load...
-Fathom.load();
-Fathom.setSiteId('XXXXXXXX');
+Fathom.load('XXXXXXXX');
 Fathom.trackPageview();
 
 // In the route changed event handler...
@@ -60,8 +59,7 @@ function App({ Component, pageProps }) {
   // Initialize Fathom when the app loads
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
-      Fathom.load();
-      Fathom.setSiteId('ZFEWBXJZ');
+      Fathom.load('ZREWXXJZ');
       Fathom.trackPageview();
     }
   }, []);
