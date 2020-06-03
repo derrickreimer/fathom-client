@@ -1,5 +1,6 @@
 interface Fathom {
-  (...args: any[]): void;
+  trackPageview: (opts?: PageViewOptions) => void;
+  trackGoal: (code: string, cents: number) => void;
 }
 
 export type PageViewOptions = {
@@ -19,9 +20,8 @@ export type LoadOptions = {
 };
 
 type FathomCommand =
-  | ['trackPageview']
-  | ['trackPageview', PageViewOptions]
-  | ['trackGoal', string, number];
+  | { type: 'trackPageview'; opts: PageViewOptions | undefined }
+  | { type: 'trackGoal'; code: string; cents: number };
 
 declare global {
   interface Window {
@@ -45,7 +45,21 @@ const enqueue = (command: FathomCommand): void => {
  */
 const flushQueue = (): void => {
   window.__fathomClientQueue = window.__fathomClientQueue || [];
-  window.__fathomClientQueue.forEach(command => window.fathom(...command));
+  window.__fathomClientQueue.forEach(command => {
+    switch (command.type) {
+      case 'trackPageview':
+        if (command.opts) {
+          window.fathom.trackPageview(command.opts);
+        } else {
+          window.fathom.trackPageview();
+        }
+        return;
+
+      case 'trackGoal':
+        window.fathom.trackGoal(command.code, command.cents);
+        return;
+    }
+  });
   window.__fathomClientQueue = [];
 };
 
@@ -82,29 +96,25 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
 export const trackPageview = (opts?: PageViewOptions): void => {
   if (window.fathom) {
     if (opts) {
-      window.fathom('trackPageview', opts);
+      window.fathom.trackPageview(opts);
     } else {
-      window.fathom('trackPageview');
+      window.fathom.trackPageview();
     }
   } else {
-    if (opts) {
-      enqueue(['trackPageview', opts]);
-    } else {
-      enqueue(['trackPageview']);
-    }
+    enqueue({ type: 'trackPageview', opts });
   }
 };
 
 /**
  * Tracks a goal.
  *
- * @param id - The goal ID.
+ * @param code - The goal ID.
  * @param cents - The value in cents.
  */
-export const trackGoal = (id: string, cents: number) => {
+export const trackGoal = (code: string, cents: number) => {
   if (window.fathom) {
-    window.fathom('trackGoal', id, cents);
+    window.fathom.trackGoal(code, cents);
   } else {
-    enqueue(['trackGoal', id, cents]);
+    enqueue({ type: 'trackGoal', code, cents });
   }
 };
