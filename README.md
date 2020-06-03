@@ -80,7 +80,6 @@ function App({ Component, pageProps }) {
     Fathom.load('ZREWXXJZ', {
       excludedDomains: ['localhost']
     });
-    }
   }, []);
 
   return <Component {...pageProps} />;
