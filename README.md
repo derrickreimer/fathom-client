@@ -4,6 +4,26 @@ A [Fathom Analytics](https://usefathom.com/) library for environments with clien
 
 Extracted from the [StaticKit](https://statickit.com) website.
 
+## Upgrading to 3.x
+
+The 3.0 release comes with a new way to load Fathom:
+
+```diff
+- Fathom.load();
+- Fathom.setSiteId('MY_FATHOM_ID');
++ Fathom.load('MY_FATHOM_ID');
+```
+
+The `load` function also accepts an object of options:
+
+```js
+Fathom.load('MY_FATHOM_ID', {
+  excludedDomains: ['localhost']
+});
+```
+
+See [advanced options for tracking](https://usefathom.com/support/tracking-advanced).
+
 ## Installation
 
 Run the following to install in your project:
@@ -25,8 +45,7 @@ This library provides an interface you can use to orchestrate Fathom calls at va
 import * as Fathom from 'fathom-client';
 
 // Upon initial page load...
-Fathom.load('XXXXXXXX');
-Fathom.trackPageview();
+Fathom.load('YOUR_FATHOM_ID');
 
 // In the route changed event handler...
 const onRouteChangeComplete = () => {
@@ -58,9 +77,9 @@ Router.events.on('routeChangeComplete', () => {
 function App({ Component, pageProps }) {
   // Initialize Fathom when the app loads
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
-      Fathom.load('ZREWXXJZ');
-      Fathom.trackPageview();
+    Fathom.load('ZREWXXJZ', {
+      excludedDomains: ['localhost']
+    });
     }
   }, []);
 
