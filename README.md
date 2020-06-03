@@ -1,6 +1,6 @@
 # Fathom Client [![CircleCI](https://circleci.com/gh/unstacked/fathom-client.svg?style=svg)](https://circleci.com/gh/unstacked/fathom-client)
 
-A [Fathom Analytics](https://usefathom.com/) library for environments with client-side routing.
+This library is a JavaScript client for [Fathom Analytics](https://usefathom.com/). It provides a `load` function that will asynchronously inject the Fathom `<script>` tag and tracking functions (`trackPageview` and `trackGoal`) that you can safely call anytime (even if the Fathom script has not yet finished loading).
 
 Extracted from the [StaticKit](https://statickit.com) website.
 
