@@ -18,7 +18,7 @@ The `load` function also accepts an object of options:
 
 ```js
 Fathom.load('MY_FATHOM_ID', {
-  excludedDomains: ['localhost']
+  includedDomains: ['yourwebsite.com']
 });
 ```
 
@@ -78,7 +78,7 @@ function App({ Component, pageProps }) {
   // Initialize Fathom when the app loads
   useEffect(() => {
     Fathom.load('ZREWXXJZ', {
-      excludedDomains: ['localhost']
+      includedDomains: ['yourwebsite.com']
     });
   }, []);
 
