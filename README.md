@@ -45,7 +45,7 @@ This library provides an interface you can use to orchestrate Fathom calls at va
 import * as Fathom from 'fathom-client';
 
 // Upon initial page load...
-Fathom.load('YOUR_FATHOM_ID');
+Fathom.load('MY_FATHOM_ID');
 
 // In the route changed event handler...
 const onRouteChangeComplete = () => {
@@ -58,7 +58,71 @@ const onSignUp = () => {
 };
 ```
 
+## API Reference
+
+### `load(siteId: string, opts?: object)`
+
+Injects the Fathom script into the DOM and loads the script asynchronously.
+
+#### Arguments
+
+- `siteId` - The site ID provided in the Fathom UI.
+- `opts` - An Object of options:
+  - `url` - The URL of the tracking script (defaults to `https://cdn.usefathom.com/script.js`).
+  - `auto` - When `false`, skips automatically tracking page views on script load (defaults to `true`).
+  - `canonical` - When `false`, ignores the canonical tag if present (defaults to `true`).
+  - `includedDomains` - Only tracks when on one of these domains.
+  - `excludedDomains` - Only tracks when NOT on one of these domains.
+  - `spa` - Accepts one of the following values: `auto`, `history`, or `hash` (see [advanced docs](https://usefathom.com/support/tracking-advanced)).
+
+#### Example
+
+```js
+import { load } from 'fathom-client';
+
+load('MY_FATHOM_ID', {
+  includedDomains: ['example.com']
+});
+```
+
+### `trackPageview(opts?: object)`
+
+Tracks a pageview.
+
+#### Arguments
+
+- `opts` - An Object of options:
+  - `url` - When set, overrides `window.location`.
+  - `referrer` - When set, overrides `document.referrer`.
+
+#### Example
+
+```js
+import { trackPageview } from 'fathom-client';
+
+trackPageview();
+```
+
+### `trackGoal(code: string, cents: number)`
+
+Tracks a goal.
+
+#### Arguments
+
+- `code` - the code provided in the Fathom UI.
+- `cents` - the value of the goal conversion.
+
+#### Example
+
+```js
+import { trackGoal } from 'fathom-client';
+
+trackGoal('MY_GOAL_CODE', 100);
+```
+
 ## Usage
+
+This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.
 
 ### Next.js
 
@@ -77,7 +141,7 @@ Router.events.on('routeChangeComplete', () => {
 function App({ Component, pageProps }) {
   // Initialize Fathom when the app loads
   useEffect(() => {
-    Fathom.load('ZREWXXJZ', {
+    Fathom.load('MY_FATHOM_ID', {
       includedDomains: ['yourwebsite.com']
     });
   }, []);
