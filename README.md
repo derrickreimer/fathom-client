@@ -1,28 +1,9 @@
-# Fathom Client [![CircleCI](https://circleci.com/gh/unstacked/fathom-client.svg?style=svg)](https://circleci.com/gh/unstacked/fathom-client)
+# Fathom Client [![CircleCI](https://circleci.com/gh/derrickreimer/fathom-client.svg?style=svg)](https://circleci.com/gh/derrickreimer/fathom-client)
 
-This library is a JavaScript client for [Fathom Analytics](https://usefathom.com/). It provides a `load` function that will asynchronously inject the Fathom `<script>` tag and tracking functions (`trackPageview` and `trackGoal`) that you can safely call anytime (even if the Fathom script has not yet finished loading).
+This library is a JavaScript client for [Fathom Analytics](https://usefathom.com/).
 
-Extracted from the [StaticKit](https://statickit.com) website.
-
-## Upgrading to 3.x
-
-The 3.0 release comes with a new way to load Fathom:
-
-```diff
-- Fathom.load();
-- Fathom.setSiteId('MY_FATHOM_ID');
-+ Fathom.load('MY_FATHOM_ID');
-```
-
-The `load` function also accepts an object of options:
-
-```js
-Fathom.load('MY_FATHOM_ID', {
-  includedDomains: ['yourwebsite.com']
-});
-```
-
-See [advanced options for tracking](https://usefathom.com/support/tracking-advanced).
+- **Asynchronous script loading.** We provide a `load` function that will asynchronously inject the Fathom `<script>` tag (great for single-page app environments).
+- **`import`-able tracking functions.** We provide tracking functions (`trackPageview` and `trackGoal`) that you can import and safely call anywhere (even if the Fathom script has not yet finished loading).
 
 ## Installation
 
@@ -152,6 +133,26 @@ function App({ Component, pageProps }) {
 
 export default App;
 ```
+
+## Upgrading to 3.x
+
+The 3.0 release comes with a new way to load Fathom:
+
+```diff
+- Fathom.load();
+- Fathom.setSiteId('MY_FATHOM_ID');
++ Fathom.load('MY_FATHOM_ID');
+```
+
+The `load` function also accepts an object of options:
+
+```js
+Fathom.load('MY_FATHOM_ID', {
+  includedDomains: ['yourwebsite.com']
+});
+```
+
+See [advanced options for tracking](https://usefathom.com/support/tracking-advanced).
 
 ## Releasing
 
