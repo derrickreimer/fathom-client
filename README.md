@@ -70,6 +70,7 @@ Injects the Fathom script into the DOM and loads the script asynchronously.
 - `opts` - An Object of options:
   - `url` - The URL of the tracking script (defaults to `https://cdn.usefathom.com/script.js`).
   - `auto` - When `false`, skips automatically tracking page views on script load (defaults to `true`).
+  - `honorDNT` - When `true`, honors the [DNT header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/DNT) in the visitor's browser
   - `canonical` - When `false`, ignores the canonical tag if present (defaults to `true`).
   - `includedDomains` - Only tracks when on one of these domains.
   - `excludedDomains` - Only tracks when NOT on one of these domains.
