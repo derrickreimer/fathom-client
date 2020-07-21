@@ -41,56 +41,62 @@ const isBrowser = typeof window !== 'undefined'
  * @param command - A set of arguments to dispatch to fathom later.
  */
 const enqueue = (command: FathomCommand): void => {
-  window.__fathomClientQueue = window.__fathomClientQueue || [];
-  window.__fathomClientQueue.push(command);
+  if (isBrowser) {
+    window.__fathomClientQueue = window.__fathomClientQueue || [];
+    window.__fathomClientQueue.push(command);
+  }
 };
 
 /**
  * Flushes the command queue.
  */
 const flushQueue = (): void => {
-  window.__fathomClientQueue = window.__fathomClientQueue || [];
-  window.__fathomClientQueue.forEach(command => {
-    switch (command.type) {
-      case 'trackPageview':
-        if (command.opts) {
-          window.fathom.trackPageview(command.opts);
-        } else {
-          window.fathom.trackPageview();
-        }
-        return;
+  if (isBrowser) {
+    window.__fathomClientQueue = window.__fathomClientQueue || [];
+    window.__fathomClientQueue.forEach(command => {
+      switch (command.type) {
+        case 'trackPageview':
+          if (command.opts) {
+            window.fathom.trackPageview(command.opts);
+          } else {
+            window.fathom.trackPageview();
+          }
+          return;
 
-      case 'trackGoal':
-        window.fathom.trackGoal(command.code, command.cents);
-        return;
-    }
-  });
-  window.__fathomClientQueue = [];
+        case 'trackGoal':
+          window.fathom.trackGoal(command.code, command.cents);
+          return;
+      }
+    });
+    window.__fathomClientQueue = [];
+  }
 };
 
 export const load = (siteId: string, opts?: LoadOptions): void => {
-  let tracker = document.createElement('script');
-  let firstScript = document.getElementsByTagName('script')[0];
+  if (isBrowser) {
+    let tracker = document.createElement('script');
+    let firstScript = document.getElementsByTagName('script')[0];
 
-  tracker.id = 'fathom-script';
-  tracker.async = true;
-  tracker.setAttribute('site', siteId);
-  tracker.src =
-    opts && opts.url ? opts.url : 'https://cdn.usefathom.com/script.js';
-  if (opts) {
-    if (opts.auto !== undefined) tracker.setAttribute('auto', `${opts.auto}`);
-    if (opts.honorDNT !== undefined)
-      tracker.setAttribute('honor-dnt', `${opts.honorDNT}`);
-    if (opts.canonical !== undefined)
-      tracker.setAttribute('canonical', `${opts.canonical}`);
-    if (opts.includedDomains)
-      tracker.setAttribute('included-domains', opts.includedDomains.join(','));
-    if (opts.excludedDomains)
-      tracker.setAttribute('excluded-domains', opts.excludedDomains.join(','));
-    if (opts.spa) tracker.setAttribute('spa', opts.spa);
+    tracker.id = 'fathom-script';
+    tracker.async = true;
+    tracker.setAttribute('site', siteId);
+    tracker.src =
+      opts && opts.url ? opts.url : 'https://cdn.usefathom.com/script.js';
+    if (opts) {
+      if (opts.auto !== undefined) tracker.setAttribute('auto', `${opts.auto}`);
+      if (opts.honorDNT !== undefined)
+        tracker.setAttribute('honor-dnt', `${opts.honorDNT}`);
+      if (opts.canonical !== undefined)
+        tracker.setAttribute('canonical', `${opts.canonical}`);
+      if (opts.includedDomains)
+        tracker.setAttribute('included-domains', opts.includedDomains.join(','));
+      if (opts.excludedDomains)
+        tracker.setAttribute('excluded-domains', opts.excludedDomains.join(','));
+      if (opts.spa) tracker.setAttribute('spa', opts.spa);
+    }
+    tracker.onload = flushQueue;
+    firstScript.parentNode.insertBefore(tracker, firstScript);
   }
-  tracker.onload = flushQueue;
-  firstScript.parentNode.insertBefore(tracker, firstScript);
 };
 
 /**
