@@ -31,6 +31,11 @@ declare global {
 }
 
 /**
+ * Checks current environment is browser based
+ */
+const isBrowser = typeof window !== 'undefined'
+
+/**
  * Enqueues a command to dispatch to fathom when the library is loaded.
  *
  * @param command - A set of arguments to dispatch to fathom later.
@@ -94,7 +99,7 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
  * @param opts - An optional `url` or `referrer` to override auto-detected values.
  */
 export const trackPageview = (opts?: PageViewOptions): void => {
-  if (window.fathom) {
+  if (isBrowser && window.fathom) {
     if (opts) {
       window.fathom.trackPageview(opts);
     } else {
@@ -112,7 +117,7 @@ export const trackPageview = (opts?: PageViewOptions): void => {
  * @param cents - The value in cents.
  */
 export const trackGoal = (code: string, cents: number) => {
-  if (window.fathom) {
+  if (isBrowser && window.fathom) {
     window.fathom.trackGoal(code, cents);
   } else {
     enqueue({ type: 'trackGoal', code, cents });
