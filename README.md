@@ -49,7 +49,7 @@ Injects the Fathom script into the DOM and loads the script asynchronously.
 
 - `siteId` - The site ID provided in the Fathom UI.
 - `opts` - An Object of options:
-  - `url` - The URL of the tracking script (defaults to `https://cdn.usefathom.com/script.js`).
+  - `url` - The URL of the tracking script (defaults to `https://cdn.usefathom.com/script.js`). If you're using [custom domains](https://usefathom.com/support/custom-domains) then you change this parameter.
   - `auto` - When `false`, skips automatically tracking page views on script load (defaults to `true`).
   - `honorDNT` - When `true`, honors the [DNT header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/DNT) in the visitor's browser
   - `canonical` - When `false`, ignores the canonical tag if present (defaults to `true`).
