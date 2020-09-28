@@ -76,9 +76,7 @@ const checkDomainsAndWarn = (domains: string[]): void => {
                                       // either a : or /
   domains.forEach((domain) => {
     if (regex.exec(domain) !== null)
-      console.warn('${domain} might fail to work as intended as it begins \
-                    with a transfer protocol (http://, https://), consider \
-                    removing the protocol portion of the string.')
+      console.warn(`The include domain ${domain} might fail to work as intended as it begins with a transfer protocol (http://, https://), consider removing the protocol portion of the string.`);
   });
 }
 
