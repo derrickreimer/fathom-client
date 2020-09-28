@@ -97,10 +97,14 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
       tracker.setAttribute('honor-dnt', `${opts.honorDNT}`);
     if (opts.canonical !== undefined)
       tracker.setAttribute('canonical', `${opts.canonical}`);
-    if (opts.includedDomains)
+    if (opts.includedDomains) {
+      checkDomainsAndWarn(opts.includedDomains);
       tracker.setAttribute('included-domains', opts.includedDomains.join(','));
-    if (opts.excludedDomains)
+    }
+    if (opts.excludedDomains) {
+      checkDomainsAndWarn(opts.excludedDomains);
       tracker.setAttribute('excluded-domains', opts.excludedDomains.join(','));
+    }
     if (opts.spa) tracker.setAttribute('spa', opts.spa);
   }
   tracker.onload = flushQueue;
