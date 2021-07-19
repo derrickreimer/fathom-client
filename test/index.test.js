@@ -55,6 +55,24 @@ describe('load', () => {
 
     expect(window.fathom.trackPageview.mock.calls.length).toBe(1);
   });
+
+  it('warns when loading include domains which are not bare domains', () => {
+    window.console = {
+      warn: jest.fn()
+    };
+
+    const firstScript = document.createElement('script');
+    document.body.appendChild(firstScript);
+    Fathom.load('abcde123', {
+      url: 'https://bobheadxi.dev/fathom.js',
+      auto: false,
+      includedDomains: ['https://bobheadxi.dev']
+    });
+
+    expect(window.console.warn).toHaveBeenCalledWith(
+      'The include domain https://bobheadxi.dev might fail to work as intended as it begins with a transfer protocol (http://, https://), consider removing the protocol portion of the string.'
+    );
+  });
 });
 
 describe('trackPageview', () => {
