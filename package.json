@@ -48,7 +48,6 @@
       "git add"
     ]
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
