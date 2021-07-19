@@ -1,17 +1,17 @@
 {
   "name": "fathom-client",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A simple wrapper around the Fathom Analytics library",
   "keywords": [
     "analytics"
   ],
-  "homepage": "https://github.com/unstacked/fathom-client",
+  "homepage": "https://github.com/derrickreimer/fathom-client",
   "bugs": {
-    "url": "https://github.com/unstacked/fathom-client/issues"
+    "url": "https://github.com/derrickreimer/fathom-client/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/unstacked/fathom-client.git"
+    "url": "https://github.com/derrickreimer/fathom-client.git"
   },
   "license": "MIT",
   "author": "Derrick Reimer",
