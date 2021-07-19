@@ -63,22 +63,23 @@ const flushQueue = (): void => {
   window.__fathomClientQueue = [];
 };
 
-
 /**
  * Loops through list of domains and warns if they start with
  * http, https, http://, etc... as this does not work with the
  * Fathom script.
- * 
+ *
  * @param domains - List of domains to check
  */
 const checkDomainsAndWarn = (domains: string[]): void => {
   const regex = /(https?)(?=:|\/|$)/; // matches http or https followed by
-                                      // either a : or /
-  domains.forEach((domain) => {
+  // either a : or /
+  domains.forEach(domain => {
     if (regex.exec(domain) !== null)
-      console.warn(`The include domain ${domain} might fail to work as intended as it begins with a transfer protocol (http://, https://), consider removing the protocol portion of the string.`);
+      console.warn(
+        `The include domain ${domain} might fail to work as intended as it begins with a transfer protocol (http://, https://). Consider removing the protocol portion of the string.`
+      );
   });
-}
+};
 
 export const load = (siteId: string, opts?: LoadOptions): void => {
   let tracker = document.createElement('script');

@@ -70,7 +70,7 @@ describe('load', () => {
     });
 
     expect(window.console.warn).toHaveBeenCalledWith(
-      'The include domain https://bobheadxi.dev might fail to work as intended as it begins with a transfer protocol (http://, https://), consider removing the protocol portion of the string.'
+      'The include domain https://bobheadxi.dev might fail to work as intended as it begins with a transfer protocol (http://, https://). Consider removing the protocol portion of the string.'
     );
   });
 });
