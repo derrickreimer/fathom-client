@@ -87,24 +87,24 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
 
   tracker.id = 'fathom-script';
   tracker.async = true;
-  tracker.setAttribute('site', siteId);
+  tracker.setAttribute('data-site', siteId);
   tracker.src =
     opts && opts.url ? opts.url : 'https://cdn.usefathom.com/script.js';
   if (opts) {
-    if (opts.auto !== undefined) tracker.setAttribute('auto', `${opts.auto}`);
+    if (opts.auto !== undefined) tracker.setAttribute('data-auto', `${opts.auto}`);
     if (opts.honorDNT !== undefined)
-      tracker.setAttribute('honor-dnt', `${opts.honorDNT}`);
+      tracker.setAttribute('data-honor-dnt', `${opts.honorDNT}`);
     if (opts.canonical !== undefined)
-      tracker.setAttribute('canonical', `${opts.canonical}`);
+      tracker.setAttribute('data-canonical', `${opts.canonical}`);
     if (opts.includedDomains) {
       checkDomainsAndWarn(opts.includedDomains);
-      tracker.setAttribute('included-domains', opts.includedDomains.join(','));
+      tracker.setAttribute('data-included-domains', opts.includedDomains.join(','));
     }
     if (opts.excludedDomains) {
       checkDomainsAndWarn(opts.excludedDomains);
-      tracker.setAttribute('excluded-domains', opts.excludedDomains.join(','));
+      tracker.setAttribute('data-excluded-domains', opts.excludedDomains.join(','));
     }
-    if (opts.spa) tracker.setAttribute('spa', opts.spa);
+    if (opts.spa) tracker.setAttribute('data-spa', opts.spa);
   }
   tracker.onload = flushQueue;
   firstScript.parentNode.insertBefore(tracker, firstScript);

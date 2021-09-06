@@ -32,9 +32,11 @@ describe('load', () => {
 
     const fathomScript = document.getElementById('fathom-script');
     expect(fathomScript.src).toBe('https://bobheadxi.dev/fathom.js');
-    expect(fathomScript.getAttribute('included-domains')).toBe('bobheadxi.dev');
-    expect(fathomScript.getAttribute('auto')).toBe('false');
-    expect(fathomScript.getAttribute('honor-dnt')).toBe(null);
+    expect(fathomScript.getAttribute('data-included-domains')).toBe(
+      'bobheadxi.dev'
+    );
+    expect(fathomScript.getAttribute('data-auto')).toBe('false');
+    expect(fathomScript.getAttribute('data-honor-dnt')).toBe(null);
   });
 
   it('runs the queue after load', () => {
