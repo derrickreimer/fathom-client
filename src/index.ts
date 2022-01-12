@@ -1,4 +1,10 @@
 interface Fathom {
+  /**
+   * See https://usefathom.com/docs/features/exclude
+   */
+  blockTrackingForMe?: () => void;
+  enableTrackingForMe?: () => void;
+  
   trackPageview: (opts?: PageViewOptions) => void;
   trackGoal: (code: string, cents: number) => void;
 }
