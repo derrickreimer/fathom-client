@@ -120,9 +120,9 @@ import { enableTrackingForMe } from 'fathom-client';
 enableTrackingForMe();
 ```
 
-### `disableTrackingForMe()`
+### `blockTrackingForMe()`
 
-Disables tracking for the current visitor.
+Blocks tracking for the current visitor.
 
 See https://usefathom.com/docs/features/exclude.
 
@@ -133,9 +133,9 @@ None.
 #### Example
 
 ```js
-import { disableTrackingForMe } from 'fathom-client';
+import { blockTrackingForMe } from 'fathom-client';
 
-disableTrackingForMe();
+blockTrackingForMe();
 ```
 
 ## Usage
