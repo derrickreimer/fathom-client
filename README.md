@@ -102,6 +102,42 @@ import { trackGoal } from 'fathom-client';
 trackGoal('MY_GOAL_CODE', 100);
 ```
 
+### `enableTrackingForMe()`
+
+Enables tracking for the current visitor.
+
+See https://usefathom.com/docs/features/exclude.
+
+#### Arguments
+
+None.
+
+#### Example
+
+```js
+import { enableTrackingForMe } from 'fathom-client';
+
+enableTrackingForMe();
+```
+
+### `disableTrackingForMe()`
+
+Disables tracking for the current visitor.
+
+See https://usefathom.com/docs/features/exclude.
+
+#### Arguments
+
+None.
+
+#### Example
+
+```js
+import { disableTrackingForMe } from 'fathom-client';
+
+disableTrackingForMe();
+```
+
 ## Usage
 
 This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.

@@ -1,6 +1,6 @@
 interface Fathom {
-  blockTrackingForMe: typeof blockTrackingForMe;
-  enableTrackingForMe: typeof enableTrackingForMe;
+  blockTrackingForMe: () => void;
+  enableTrackingForMe: () => void;
   trackPageview: (opts?: PageViewOptions) => void;
   trackGoal: (code: string, cents: number) => void;
 }
@@ -24,7 +24,8 @@ export type LoadOptions = {
 type FathomCommand =
   | { type: 'trackPageview'; opts: PageViewOptions | undefined }
   | { type: 'trackGoal'; code: string; cents: number }
-  | { type: 'blockTrackingForMe' | 'enableTrackingForMe' };
+  | { type: 'blockTrackingForMe' }
+  | { type: 'enableTrackingForMe' };
 
 declare global {
   interface Window {
@@ -62,11 +63,11 @@ const flushQueue = (): void => {
         window.fathom.trackGoal(command.code, command.cents);
         return;
 
-      case 'enableTrackingForMe' : 
+      case 'enableTrackingForMe':
         window.fathom.enableTrackingForMe();
         return;
-        
-      case 'blockTrackingForMe' : 
+
+      case 'blockTrackingForMe':
         window.fathom.blockTrackingForMe();
         return;
     }
@@ -102,18 +103,25 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
   tracker.src =
     opts && opts.url ? opts.url : 'https://cdn.usefathom.com/script.js';
   if (opts) {
-    if (opts.auto !== undefined) tracker.setAttribute('data-auto', `${opts.auto}`);
+    if (opts.auto !== undefined)
+      tracker.setAttribute('data-auto', `${opts.auto}`);
     if (opts.honorDNT !== undefined)
       tracker.setAttribute('data-honor-dnt', `${opts.honorDNT}`);
     if (opts.canonical !== undefined)
       tracker.setAttribute('data-canonical', `${opts.canonical}`);
     if (opts.includedDomains) {
       checkDomainsAndWarn(opts.includedDomains);
-      tracker.setAttribute('data-included-domains', opts.includedDomains.join(','));
+      tracker.setAttribute(
+        'data-included-domains',
+        opts.includedDomains.join(',')
+      );
     }
     if (opts.excludedDomains) {
       checkDomainsAndWarn(opts.excludedDomains);
-      tracker.setAttribute('data-excluded-domains', opts.excludedDomains.join(','));
+      tracker.setAttribute(
+        'data-excluded-domains',
+        opts.excludedDomains.join(',')
+      );
     }
     if (opts.spa) tracker.setAttribute('data-spa', opts.spa);
   }
@@ -159,7 +167,7 @@ export const blockTrackingForMe = (): void => {
   if (window.fathom) {
     window.fathom.blockTrackingForMe();
   } else {
-    enqueue({ type: 'blockTrackingForMe' })
+    enqueue({ type: 'blockTrackingForMe' });
   }
 };
 
@@ -167,7 +175,6 @@ export const enableTrackingForMe = (): void => {
   if (window.fathom) {
     window.fathom.enableTrackingForMe();
   } else {
-    enqueue({ type: 'enableTrackingForMe' })
-
+    enqueue({ type: 'enableTrackingForMe' });
   }
 };
