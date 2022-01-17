@@ -136,3 +136,47 @@ describe('trackGoal', () => {
     });
   });
 });
+
+describe('enableTrackingForMe', () => {
+  it('enqueues the operation if fathom is not loaded', () => {
+    Fathom.enableTrackingForMe();
+    expect(window.__fathomClientQueue).toStrictEqual([
+      { type: 'enableTrackingForMe' }
+    ]);
+  });
+
+  it('calls the fathom function if loaded', () => {
+    return new Promise(resolve => {
+      window.fathom = {
+        trackPageview: jest.fn(),
+        enableTrackingForMe: () => {
+          resolve();
+        }
+      };
+
+      Fathom.enableTrackingForMe();
+    });
+  });
+});
+
+describe('blockTrackingForMe', () => {
+  it('enqueues the operation if fathom is not loaded', () => {
+    Fathom.blockTrackingForMe();
+    expect(window.__fathomClientQueue).toStrictEqual([
+      { type: 'blockTrackingForMe' }
+    ]);
+  });
+
+  it('calls the fathom function if loaded', () => {
+    return new Promise(resolve => {
+      window.fathom = {
+        trackPageview: jest.fn(),
+        blockTrackingForMe: () => {
+          resolve();
+        }
+      };
+
+      Fathom.blockTrackingForMe();
+    });
+  });
+});
