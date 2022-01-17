@@ -1,4 +1,6 @@
 interface Fathom {
+  blockTrackingForMe: typeof blockTrackingForMe;
+  enableTrackingForMe: typeof enableTrackingForMe;
   trackPageview: (opts?: PageViewOptions) => void;
   trackGoal: (code: string, cents: number) => void;
 }
@@ -21,7 +23,8 @@ export type LoadOptions = {
 
 type FathomCommand =
   | { type: 'trackPageview'; opts: PageViewOptions | undefined }
-  | { type: 'trackGoal'; code: string; cents: number };
+  | { type: 'trackGoal'; code: string; cents: number }
+  | { type: 'blockTrackingForMe' | 'enableTrackingForMe' };
 
 declare global {
   interface Window {
@@ -57,6 +60,14 @@ const flushQueue = (): void => {
 
       case 'trackGoal':
         window.fathom.trackGoal(command.code, command.cents);
+        return;
+
+      case 'enableTrackingForMe' : 
+        window.fathom.enableTrackingForMe();
+        return;
+        
+      case 'blockTrackingForMe' : 
+        window.fathom.blockTrackingForMe();
         return;
     }
   });
@@ -138,5 +149,25 @@ export const trackGoal = (code: string, cents: number) => {
     window.fathom.trackGoal(code, cents);
   } else {
     enqueue({ type: 'trackGoal', code, cents });
+  }
+};
+
+/**
+ * See https://usefathom.com/docs/features/exclude
+ */
+export const blockTrackingForMe = (): void => {
+  if (window.fathom) {
+    window.fathom.blockTrackingForMe();
+  } else {
+    enqueue({ type: 'blockTrackingForMe' })
+  }
+};
+
+export const enableTrackingForMe = (): void => {
+  if (window.fathom) {
+    window.fathom.enableTrackingForMe();
+  } else {
+    enqueue({ type: 'enableTrackingForMe' })
+
   }
 };
