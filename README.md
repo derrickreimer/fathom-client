@@ -5,6 +5,12 @@ This library is a JavaScript client for [Fathom Analytics](https://usefathom.com
 - **Asynchronous script loading.** We provide a `load` function that will asynchronously inject the Fathom `<script>` tag (great for single-page app environments).
 - **`import`-able tracking functions.** We provide tracking functions (`trackPageview` and `trackGoal`) that you can import and safely call anywhere (even if the Fathom script has not yet finished loading).
 
+---
+
+Maintained with ♥️ by the [SavvyCal](https://savvycal.com/?utm_source=github&utm_medium=oss&utm_campaign=fathom-client) team
+
+[![sc-sticker](https://user-images.githubusercontent.com/341387/150855440-1a4122b4-b3c9-47b5-91ff-c0d73f421f84.svg)](https://savvycal.com/?utm_source=github&utm_medium=oss&utm_campaign=fathom-client)
+
 ## Installation
 
 Run the following to install in your project:
