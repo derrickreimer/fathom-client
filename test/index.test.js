@@ -184,3 +184,25 @@ describe('blockTrackingForMe', () => {
     });
   });
 });
+
+describe('setSite', () => {
+  it('enqueues the operation if fathom is not loaded', () => {
+    Fathom.setSite('NEW_ID');
+    expect(window.__fathomClientQueue).toStrictEqual([
+      { type: 'setSite', id: 'NEW_ID' }
+    ]);
+  });
+
+  it('calls the fathom function if loaded', () => {
+    return new Promise(resolve => {
+      window.fathom = {
+        setSite: id => {
+          expect(id).toStrictEqual('NEW_ID');
+          resolve();
+        }
+      };
+
+      Fathom.setSite('NEW_ID');
+    });
+  });
+});

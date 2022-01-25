@@ -3,6 +3,7 @@ interface Fathom {
   enableTrackingForMe: () => void;
   trackPageview: (opts?: PageViewOptions) => void;
   trackGoal: (code: string, cents: number) => void;
+  setSite: (id: string) => void;
 }
 
 export type PageViewOptions = {
@@ -25,7 +26,8 @@ type FathomCommand =
   | { type: 'trackPageview'; opts: PageViewOptions | undefined }
   | { type: 'trackGoal'; code: string; cents: number }
   | { type: 'blockTrackingForMe' }
-  | { type: 'enableTrackingForMe' };
+  | { type: 'enableTrackingForMe' }
+  | { type: 'setSite'; id: string };
 
 declare global {
   interface Window {
@@ -52,23 +54,23 @@ const flushQueue = (): void => {
   window.__fathomClientQueue.forEach(command => {
     switch (command.type) {
       case 'trackPageview':
-        if (command.opts) {
-          window.fathom.trackPageview(command.opts);
-        } else {
-          window.fathom.trackPageview();
-        }
+        trackPageview(command.opts);
         return;
 
       case 'trackGoal':
-        window.fathom.trackGoal(command.code, command.cents);
+        trackGoal(command.code, command.cents);
         return;
 
       case 'enableTrackingForMe':
-        window.fathom.enableTrackingForMe();
+        enableTrackingForMe();
         return;
 
       case 'blockTrackingForMe':
-        window.fathom.blockTrackingForMe();
+        blockTrackingForMe();
+        return;
+
+      case 'setSite':
+        setSite(command.id);
         return;
     }
   });
@@ -161,6 +163,8 @@ export const trackGoal = (code: string, cents: number) => {
 };
 
 /**
+ * Blocks tracking for the current visitor.
+ *
  * See https://usefathom.com/docs/features/exclude
  */
 export const blockTrackingForMe = (): void => {
@@ -171,10 +175,28 @@ export const blockTrackingForMe = (): void => {
   }
 };
 
+/**
+ * Enables tracking for the current visitor.
+ *
+ * See https://usefathom.com/docs/features/exclude
+ */
 export const enableTrackingForMe = (): void => {
   if (window.fathom) {
     window.fathom.enableTrackingForMe();
   } else {
     enqueue({ type: 'enableTrackingForMe' });
+  }
+};
+
+/**
+ * Sets the Site ID.
+ *
+ * @param id - The new site ID.
+ */
+export const setSite = (id: string): void => {
+  if (window.fathom) {
+    window.fathom.setSite(id);
+  } else {
+    enqueue({ type: 'setSite', id });
   }
 };

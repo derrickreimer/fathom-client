@@ -144,6 +144,24 @@ import { blockTrackingForMe } from 'fathom-client';
 blockTrackingForMe();
 ```
 
+### `setSite(id: string)`
+
+Sets the site ID for tracking (overrides the ID used when loading Fathom).
+
+#### Arguments
+
+- `id` - The site ID provided in the Fathom UI.
+
+#### Example
+
+```js
+import { load, setSite } from 'fathom-client';
+
+load('MY_FATHOM_ID');
+
+setSite('A_DIFFERENT_FATHOM_ID');
+```
+
 ## Usage
 
 This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.
