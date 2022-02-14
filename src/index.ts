@@ -96,8 +96,8 @@ const checkDomainsAndWarn = (domains: string[]): void => {
 };
 
 export const load = (siteId: string, opts?: LoadOptions): void => {
-  let tracker = document.createElement('script');
-  let firstScript = document.getElementsByTagName('script')[0] || document.querySelector('body');
+  const tracker = document.createElement('script');
+  const firstScript = document.getElementsByTagName('script')[0];
 
   tracker.id = 'fathom-script';
   tracker.async = true;
@@ -128,7 +128,13 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
     if (opts.spa) tracker.setAttribute('data-spa', opts.spa);
   }
   tracker.onload = flushQueue;
-  firstScript.parentNode.insertBefore(tracker, firstScript);
+  
+  if (firstScript) {
+    firstScript.parentNode.insertBefore(tracker, firstScript);
+  } else {
+    /* Fallback if no existing script tag is found on the page */
+    document.querySelector('head').appendChild(tracker);
+  }
 };
 
 /**
