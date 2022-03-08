@@ -144,6 +144,7 @@ export const trackPageview = (opts?: PageViewOptions): void => {
       window.fathom.trackPageview();
     }
   } else {
+    console.warn("Fathom was not detected. Queueing trackPageview() call for when Fathom loads.")
     enqueue({ type: 'trackPageview', opts });
   }
 };
@@ -158,6 +159,7 @@ export const trackGoal = (code: string, cents: number) => {
   if (window.fathom) {
     window.fathom.trackGoal(code, cents);
   } else {
+    console.warn("Fathom was not detected. Queueing trackGoal() call for when Fathom loads.")
     enqueue({ type: 'trackGoal', code, cents });
   }
 };
@@ -171,6 +173,7 @@ export const blockTrackingForMe = (): void => {
   if (window.fathom) {
     window.fathom.blockTrackingForMe();
   } else {
+    console.warn("Fathom was not detected. Queueing blockTrackingForMe() call for when Fathom loads.")
     enqueue({ type: 'blockTrackingForMe' });
   }
 };
@@ -184,6 +187,7 @@ export const enableTrackingForMe = (): void => {
   if (window.fathom) {
     window.fathom.enableTrackingForMe();
   } else {
+    console.warn("Fathom was not detected. Queueing enableTrackingForMe() call for when Fathom loads.")
     enqueue({ type: 'enableTrackingForMe' });
   }
 };
@@ -197,6 +201,7 @@ export const setSite = (id: string): void => {
   if (window.fathom) {
     window.fathom.setSite(id);
   } else {
+    console.warn("Fathom was not detected. Queueing setSite() call for when Fathom loads.")
     enqueue({ type: 'setSite', id });
   }
 };
