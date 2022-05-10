@@ -176,8 +176,10 @@ import Router from 'next/router';
 import * as Fathom from 'fathom-client';
 
 // Record a pageview when route changes
-Router.events.on('routeChangeComplete', () => {
-  Fathom.trackPageview();
+Router.events.on('routeChangeComplete', (as, routeProps) => {
+  if (!routeProps.shallow) {
+    Fathom.trackPageview();
+  }
 });
 
 function App({ Component, pageProps }) {
