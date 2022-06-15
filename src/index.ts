@@ -194,7 +194,7 @@ export const enableTrackingForMe = (): void => {
  * Checks if tracking is enabled for the current vistior
  */
 export const isTrackingEnabled = (): boolean => {
-  const preferenceStorage: string = localStorage.getItem('blockFathomTracking');
+  const preferenceStorage: string | null = localStorage.getItem('blockFathomTracking');
   return preferenceStorage !== null ? preferenceStorage !== 'true' : true;
 };
 
