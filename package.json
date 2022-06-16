@@ -1,6 +1,6 @@
 {
   "name": "fathom-client",
-  "version": "3.4.1",
+  "version": "3.5.0",
   "description": "A simple wrapper around the Fathom Analytics library",
   "keywords": [
     "analytics"
@@ -33,12 +33,6 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch"
   },
-  "jest": {
-    "resetMocks": false,
-    "setupFiles": [
-      "jest-localstorage-mock"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -52,6 +46,12 @@
     "package.json": [
       "npx sort-package-json",
       "git add"
+    ]
+  },
+  "jest": {
+    "resetMocks": false,
+    "setupFiles": [
+      "jest-localstorage-mock"
     ]
   },
   "devDependencies": {
