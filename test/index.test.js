@@ -185,6 +185,31 @@ describe('blockTrackingForMe', () => {
   });
 });
 
+describe('isTrackingEnabled', () => {
+  beforeEach(() => localStorage.clear);
+  const key = 'blockFathomTracking';
+
+  it("returns `true` if the localStorage value doesn't exist", () => {
+    const response = Fathom.isTrackingEnabled();
+    expect(localStorage.getItem).toHaveBeenLastCalledWith(key);
+    expect(response).toBe(true);
+  });
+  it("returns `false` when the localStorage value contains string 'true'", () => {
+    localStorage.setItem(key, 'true');
+
+    const response = Fathom.isTrackingEnabled();
+    expect(localStorage.getItem).toHaveBeenLastCalledWith(key);
+    expect(response).toBe(false);
+  });
+  it("treats localStorage values other than 'true' as non-truthy", () => {
+    localStorage.setItem(key, 'function nonsense(){ return "noodle"; }');
+
+    const response = Fathom.isTrackingEnabled();
+    expect(localStorage.getItem).toHaveBeenLastCalledWith(key);
+    expect(response).toBe(true);
+  });
+});
+
 describe('setSite', () => {
   it('enqueues the operation if fathom is not loaded', () => {
     Fathom.setSite('NEW_ID');

@@ -144,6 +144,28 @@ import { blockTrackingForMe } from 'fathom-client';
 blockTrackingForMe();
 ```
 
+### `isTrackingEnabled()`
+
+Checks if tracking is enabled for the current visitor.
+
+See https://usefathom.com/docs/features/exclude.
+
+#### Arguments
+
+None.
+
+#### Returns
+
+Boolean.
+
+#### Example
+
+```js
+import { isTrackingEnabled } from 'fathom-client';
+
+const check = isTrackingEnabled(); // `true` by default
+```
+
 ### `setSite(id: string)`
 
 Sets the site ID for tracking (overrides the ID used when loading Fathom).

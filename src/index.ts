@@ -97,7 +97,9 @@ const checkDomainsAndWarn = (domains: string[]): void => {
 
 export const load = (siteId: string, opts?: LoadOptions): void => {
   let tracker = document.createElement('script');
-  let firstScript = document.getElementsByTagName('script')[0] || document.querySelector('body');
+  let firstScript =
+    document.getElementsByTagName('script')[0] ||
+    document.querySelector('body');
 
   tracker.id = 'fathom-script';
   tracker.async = true;
@@ -186,6 +188,16 @@ export const enableTrackingForMe = (): void => {
   } else {
     enqueue({ type: 'enableTrackingForMe' });
   }
+};
+
+/**
+ * Checks if tracking is enabled for the current vistior
+ */
+export const isTrackingEnabled = (): boolean => {
+  const preferenceStorage: string | null = localStorage.getItem(
+    'blockFathomTracking'
+  );
+  return preferenceStorage !== null ? preferenceStorage !== 'true' : true;
 };
 
 /**

@@ -33,6 +33,12 @@
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch"
   },
+  "jest": {
+    "resetMocks": false,
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -55,6 +61,7 @@
     "babel-jest": "^27.4",
     "husky": "^3.0.9",
     "jest": "^27.4",
+    "jest-localstorage-mock": "^2.4.21",
     "lint-staged": "^12.1.7",
     "np": "^7.6.0",
     "prettier": "^1.18.2",
