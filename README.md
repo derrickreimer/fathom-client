@@ -218,6 +218,56 @@ function App({ Component, pageProps }) {
 export default App;
 ```
 
+or if using the experimental `appDir` option, add a client component to your root `layout.tsx` file.
+
+```tsx
+// layout.tsx
+
+import Fathom from "./Fathom" 
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+      </head>
+      <body>
+        <Fathom />
+        <Page>{children}</Page>
+      </body>
+    </html>
+  )
+}
+```
+
+and create a client component like so
+
+```tsx
+// Fathom.tsx
+'use client'
+
+import { load, trackPageview } from 'fathom-client'
+import { useEffect } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+
+export default function Fathom() {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    load('MY_FATHOM_ID', {
+      includedDomains: ['yourwebsite.com']
+    })
+  }, [])
+  
+  useEffect(() => {
+    trackPageview()
+
+    // Record a pageview when route changes
+  }, [pathname, searchParams])
+
+  return null
+}
+```
+
 ## Upgrading to 3.x
 
 The 3.0 release comes with a new way to load Fathom:
