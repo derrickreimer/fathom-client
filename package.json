@@ -40,12 +40,10 @@
   },
   "lint-staged": {
     "*.{js,css,json,md}": [
-      "npx prettier --write",
-      "git add"
+      "npx prettier --write"
     ],
     "package.json": [
-      "npx sort-package-json",
-      "git add"
+      "npx sort-package-json"
     ]
   },
   "jest": {
