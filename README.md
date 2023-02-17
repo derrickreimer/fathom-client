@@ -188,7 +188,9 @@ setSite('A_DIFFERENT_FATHOM_ID');
 
 This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.
 
-### Next.js
+### Next.js (v12.x)
+
+> **Note:** This method is not currently compatible with v13 experimental changes (see [issue #44](https://github.com/derrickreimer/fathom-client/issues/44)).
 
 Create an `_app.js` file in your `pages` directory, [like this](https://nextjs.org/docs#custom-app):
 
