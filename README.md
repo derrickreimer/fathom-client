@@ -188,9 +188,11 @@ setSite('A_DIFFERENT_FATHOM_ID');
 
 This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.
 
-### Next.js (v12.x)
+### Next.js
 
-> **Note:** This method is not currently compatible with v13 experimental changes (see [issue #44](https://github.com/derrickreimer/fathom-client/issues/44)).
+#### Using `pages` directory (v12 and older)
+
+> If you are using the latest Next.js beta with the `app` directory, see the modified instructions below.
 
 Create an `_app.js` file in your `pages` directory, [like this](https://nextjs.org/docs#custom-app):
 
@@ -220,7 +222,43 @@ function App({ Component, pageProps }) {
 export default App;
 ```
 
-or if using the experimental `appDir` option, add a client component to your root `layout.tsx` file.
+#### Using the experimental `app` directory (v13)
+
+Create a `Fathom` client component:
+
+```tsx
+// Fathom.tsx
+'use client'
+
+import { load, trackPageview } from 'fathom-client'
+import { useEffect, Suspense } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+
+function TrackPageView() {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    load('MY_FATHOM_ID', {
+      includedDomains: ['yourwebsite.com']
+    })
+  }, [])
+  
+  // Record a pageview when route changes
+  useEffect(() => {
+    trackPageview();
+  }, [pathname, searchParams])
+
+  return null;
+}
+
+export default function Fathom() {
+  return <Suspense fallback={null}>
+    <TrackPageView />
+  </Suspense>
+}
+```
+
+Then, add the client component to your root `layout.tsx` file:
 
 ```tsx
 // layout.tsx
@@ -238,35 +276,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </body>
     </html>
   )
-}
-```
-
-and create a client component like so
-
-```tsx
-// Fathom.tsx
-'use client'
-
-import { load, trackPageview } from 'fathom-client'
-import { useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
-
-export default function Fathom() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  useEffect(() => {
-    load('MY_FATHOM_ID', {
-      includedDomains: ['yourwebsite.com']
-    })
-  }, [])
-  
-  useEffect(() => {
-    trackPageview()
-
-    // Record a pageview when route changes
-  }, [pathname, searchParams])
-
-  return null
 }
 ```
 
