@@ -239,7 +239,8 @@ function TrackPageView() {
   const searchParams = useSearchParams()
   useEffect(() => {
     load('MY_FATHOM_ID', {
-      includedDomains: ['yourwebsite.com']
+      includedDomains: ['yourwebsite.com'],
+      auto: false
     })
   }, [])
   
