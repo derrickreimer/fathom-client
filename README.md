@@ -228,55 +228,65 @@ Create a `Fathom` client component:
 
 ```tsx
 // Fathom.tsx
-'use client'
+"use client";
 
-import { load, trackPageview } from 'fathom-client'
-import { useEffect, Suspense } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { load, trackPageview } from "fathom-client";
+import { useEffect, Suspense } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 function TrackPageView() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Load the Fathom script on mount
   useEffect(() => {
-    load('MY_FATHOM_ID', {
-      includedDomains: ['yourwebsite.com'],
-      auto: false
-    })
-  }, [])
-  
+    load("MY_FATHOM_ID", {
+      includedDomains: ["yourwebsite.com"],
+      auto: false,
+    });
+  }, []);
+
   // Record a pageview when route changes
   useEffect(() => {
-    trackPageview();
-  }, [pathname, searchParams])
+    if (!pathname) return;
+
+    trackPageview({
+      url: pathname + searchParams.toString(),
+      referrer: document.referrer,
+    });
+  }, [pathname, searchParams]);
 
   return null;
 }
 
 export default function Fathom() {
-  return <Suspense fallback={null}>
-    <TrackPageView />
-  </Suspense>
+  return (
+    <Suspense fallback={null}>
+      <TrackPageView />
+    </Suspense>
+  );
 }
 ```
+
+Note that we explicitly pass the `url` to `trackPageview` to avoid race conditions that occur when we allow the Fathom script to infer the URL from the browser.
 
 Then, add the client component to your root `layout.tsx` file:
 
 ```tsx
 // layout.tsx
 
-import Fathom from "./Fathom" 
+import Fathom from "./Fathom";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
-      </head>
+      <head></head>
       <body>
         <Fathom />
         <Page>{children}</Page>
       </body>
     </html>
-  )
+  );
 }
 ```
 
