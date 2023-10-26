@@ -3,7 +3,7 @@
 This library is a JavaScript client for [Fathom Analytics](https://usefathom.com/).
 
 - **Asynchronous script loading.** We provide a `load` function that will asynchronously inject the Fathom `<script>` tag (great for single-page app environments).
-- **`import`-able tracking functions.** We provide tracking functions (`trackPageview` and `trackGoal`) that you can import and safely call anywhere (even if the Fathom script has not yet finished loading).
+- **`import`-able tracking functions.** We provide tracking functions (`trackPageview` and `trackEvent`) that you can import and safely call anywhere (even if the Fathom script has not yet finished loading).
 
 ---
 
@@ -41,7 +41,7 @@ const onRouteChangeComplete = () => {
 
 // In an event handler where a goal is achieved...
 const onSignUp = () => {
-  Fathom.trackGoal('Sign Up', 100);
+  Fathom.trackEvent('Sign Up');
 };
 ```
 
@@ -91,9 +91,30 @@ import { trackPageview } from 'fathom-client';
 trackPageview();
 ```
 
+### `trackEvent(eventName: string, opts?: object)`
+
+Tracks an event.
+
+See [Creating an using events](https://usefathom.com/docs/features/events).
+
+#### Arguments
+
+- `eventName` - This can be nearly anything you want. Avoid special chars and emojis.
+- `opts` - An Object of options:
+  - `_site_id` - The Fathom site ID.
+  - `_value` - The value of the event (in cents).
+
+#### Example
+
+```js
+import { trackEvent } from 'fathom-client';
+
+trackEvent('checkout completed', { _value: 100 });
+```
+
 ### `trackGoal(code: string, cents: number)`
 
-Tracks a goal.
+Tracks a goal. **This is now deprecated, see `trackEvent` instead**.
 
 #### Arguments
 
@@ -228,11 +249,11 @@ Create a `Fathom` client component:
 
 ```tsx
 // Fathom.tsx
-"use client";
+'use client';
 
-import { load, trackPageview } from "fathom-client";
-import { useEffect, Suspense } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { load, trackPageview } from 'fathom-client';
+import { useEffect, Suspense } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 function TrackPageView() {
   const pathname = usePathname();
@@ -240,9 +261,9 @@ function TrackPageView() {
 
   // Load the Fathom script on mount
   useEffect(() => {
-    load("MY_FATHOM_ID", {
-      includedDomains: ["yourwebsite.com"],
-      auto: false,
+    load('MY_FATHOM_ID', {
+      includedDomains: ['yourwebsite.com'],
+      auto: false
     });
   }, []);
 
@@ -252,7 +273,7 @@ function TrackPageView() {
 
     trackPageview({
       url: pathname + searchParams.toString(),
-      referrer: document.referrer,
+      referrer: document.referrer
     });
   }, [pathname, searchParams]);
 
@@ -275,7 +296,7 @@ Then, add the client component to your root `layout.tsx` file:
 ```tsx
 // layout.tsx
 
-import Fathom from "./Fathom";
+import Fathom from './Fathom';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
