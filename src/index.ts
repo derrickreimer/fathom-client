@@ -3,7 +3,7 @@ interface Fathom {
   enableTrackingForMe: () => void;
   trackPageview: (opts?: PageViewOptions) => void;
   trackGoal: (code: string, cents: number) => void;
-  trackEvent: (code: string, opts?: EventOptions) => void;
+  trackEvent: (event_name: string, opts?: EventOptions) => void;
   setSite: (id: string) => void;
 }
 
