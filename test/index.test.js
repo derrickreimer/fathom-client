@@ -148,7 +148,11 @@ describe('trackEvent', () => {
   it('enqueues the operation if fathom is not loaded', () => {
     Fathom.trackEvent('dynamic event test', { _value: 0 });
     expect(window.__fathomClientQueue).toStrictEqual([
-      { type: 'trackEvent', event_name: 'dynamic event test', opts: { _value: 0 } }
+      {
+        type: 'trackEvent',
+        eventName: 'dynamic event test',
+        opts: { _value: 0 }
+      }
     ]);
   });
 
