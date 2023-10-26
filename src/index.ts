@@ -3,12 +3,18 @@ interface Fathom {
   enableTrackingForMe: () => void;
   trackPageview: (opts?: PageViewOptions) => void;
   trackGoal: (code: string, cents: number) => void;
+  trackEvent: (eventName: string, opts?: EventOptions) => void;
   setSite: (id: string) => void;
 }
 
 export type PageViewOptions = {
   url?: string;
   referrer?: string;
+};
+
+export type EventOptions = {
+  _value?: number;
+  _site_id?: string;
 };
 
 // refer to https://usefathom.com/support/tracking-advanced
@@ -25,6 +31,7 @@ export type LoadOptions = {
 type FathomCommand =
   | { type: 'trackPageview'; opts: PageViewOptions | undefined }
   | { type: 'trackGoal'; code: string; cents: number }
+  | { type: 'trackEvent'; eventName: string; opts: EventOptions | undefined }
   | { type: 'blockTrackingForMe' }
   | { type: 'enableTrackingForMe' }
   | { type: 'setSite'; id: string };
@@ -59,6 +66,10 @@ const flushQueue = (): void => {
 
       case 'trackGoal':
         trackGoal(command.code, command.cents);
+        return;
+
+      case 'trackEvent':
+        trackEvent(command.eventName, command.opts);
         return;
 
       case 'enableTrackingForMe':
@@ -155,12 +166,31 @@ export const trackPageview = (opts?: PageViewOptions): void => {
  *
  * @param code - The goal ID.
  * @param cents - The value in cents.
+ * @deprecated If you are using this to track an existing goal, however, it will continue to work.
+ * @see https://usefathom.com/docs/features/events
  */
 export const trackGoal = (code: string, cents: number) => {
   if (window.fathom) {
     window.fathom.trackGoal(code, cents);
   } else {
     enqueue({ type: 'trackGoal', code, cents });
+  }
+};
+
+/**
+ * Tracks a dynamic event.
+ *
+ * @param eventName - This can be nearly anything you want. Avoid special chars and emojis.
+ * @param opts - A collection of options.
+ * @param opts._site_id - The site ID (optional).
+ * @param opts._value - The value in cents (optional).
+ * @see https://usefathom.com/docs/features/events
+ */
+export const trackEvent = (eventName: string, opts?: EventOptions) => {
+  if (window.fathom) {
+    window.fathom.trackEvent(eventName, opts);
+  } else {
+    enqueue({ type: 'trackEvent', eventName, opts });
   }
 };
 

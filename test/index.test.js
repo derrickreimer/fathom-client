@@ -48,7 +48,8 @@ describe('load', () => {
 
     window.fathom = {
       trackPageview: jest.fn(),
-      trackGoal: jest.fn()
+      trackGoal: jest.fn(),
+      trackEvent: jest.fn()
     };
 
     const firstScript = document.createElement('script');
@@ -96,7 +97,8 @@ describe('trackPageview', () => {
           expect(args).toStrictEqual([]);
           resolve();
         },
-        trackGoal: jest.fn()
+        trackGoal: jest.fn(),
+        trackEvent: jest.fn()
       };
 
       Fathom.trackPageview();
@@ -110,7 +112,8 @@ describe('trackPageview', () => {
           expect(args).toStrictEqual([{ url: 'https://bobheadxi.dev' }]);
           resolve();
         },
-        trackGoal: jest.fn()
+        trackGoal: jest.fn(),
+        trackEvent: jest.fn()
       };
 
       Fathom.trackPageview({ url: 'https://bobheadxi.dev' });
@@ -137,6 +140,35 @@ describe('trackGoal', () => {
       };
 
       Fathom.trackGoal('Sign Up', 0);
+    });
+  });
+});
+
+describe('trackEvent', () => {
+  it('enqueues the operation if fathom is not loaded', () => {
+    Fathom.trackEvent('dynamic event test', { _value: 0 });
+    expect(window.__fathomClientQueue).toStrictEqual([
+      {
+        type: 'trackEvent',
+        eventName: 'dynamic event test',
+        opts: { _value: 0 }
+      }
+    ]);
+  });
+
+  it('calls the fathom function if loaded', () => {
+    return new Promise(resolve => {
+      window.fathom = {
+        trackPageview: jest.fn(),
+        trackEvent: (...args) => {
+          expect(args).toStrictEqual(['dynamic event test', { _value: 0 }]);
+          resolve();
+        }
+      };
+
+      Fathom.trackEvent('dynamic event test', {
+        _value: 0
+      });
     });
   });
 });
