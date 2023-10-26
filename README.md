@@ -95,7 +95,7 @@ trackPageview();
 
 Tracks an event.
 
-See [Creating an using events](https://usefathom.com/docs/features/events).
+See [Creating and using events](https://usefathom.com/docs/features/events).
 
 #### Arguments
 
