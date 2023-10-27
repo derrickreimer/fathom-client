@@ -59,8 +59,6 @@ Injects the Fathom script into the DOM and loads the script asynchronously.
   - `auto` - When `false`, skips automatically tracking page views on script load (defaults to `true`).
   - `honorDNT` - When `true`, honors the [DNT header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/DNT) in the visitor's browser
   - `canonical` - When `false`, ignores the canonical tag if present (defaults to `true`).
-  - `includedDomains` - Only tracks when on one of these domains.
-  - `excludedDomains` - Only tracks when NOT on one of these domains.
   - `spa` - Accepts one of the following values: `auto`, `history`, or `hash` (see [advanced docs](https://usefathom.com/support/tracking-advanced)).
 
 #### Example
@@ -69,7 +67,7 @@ Injects the Fathom script into the DOM and loads the script asynchronously.
 import { load } from 'fathom-client';
 
 load('MY_FATHOM_ID', {
-  includedDomains: ['example.com']
+  // Add options here
 });
 ```
 
@@ -205,6 +203,11 @@ load('MY_FATHOM_ID');
 setSite('A_DIFFERENT_FATHOM_ID');
 ```
 
+## Allowed Domains
+Manage your allowed domains within your Fathom site's Firewall settings. Doing so enables the usage of wildcards (e.g., *.example.com). See https://usefathom.com/docs/script/firewall#allowed
+
+The 'includedDomains' and 'excludedDomains' options, while deprecated, are still supported to ensure backward compatibility.
+
 ## Usage
 
 This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.
@@ -233,7 +236,7 @@ function App({ Component, pageProps }) {
   // Initialize Fathom when the app loads
   useEffect(() => {
     Fathom.load('MY_FATHOM_ID', {
-      includedDomains: ['yourwebsite.com']
+      // Add options here
     });
   }, []);
 
@@ -262,7 +265,6 @@ function TrackPageView() {
   // Load the Fathom script on mount
   useEffect(() => {
     load('MY_FATHOM_ID', {
-      includedDomains: ['yourwebsite.com'],
       auto: false
     });
   }, []);
@@ -325,7 +327,7 @@ The `load` function also accepts an object of options:
 
 ```js
 Fathom.load('MY_FATHOM_ID', {
-  includedDomains: ['yourwebsite.com']
+  // Add options here
 });
 ```
 
