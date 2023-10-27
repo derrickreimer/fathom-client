@@ -204,9 +204,10 @@ setSite('A_DIFFERENT_FATHOM_ID');
 ```
 
 ## Allowed Domains
-Manage your allowed domains within your Fathom site's Firewall settings. Doing so enables the usage of wildcards (e.g., *.example.com). See https://usefathom.com/docs/script/firewall#allowed
 
-The 'includedDomains' and 'excludedDomains' options, while deprecated, are still supported to ensure backward compatibility.
+Manage your allowed domains within your Fathom site's Firewall settings. Doing so enables the usage of wildcards (e.g., \*.example.com). See https://usefathom.com/docs/script/firewall#allowed
+
+The `includedDomains` and `excludedDomains` options, while deprecated, are still supported to ensure backward compatibility.
 
 ## Usage
 
