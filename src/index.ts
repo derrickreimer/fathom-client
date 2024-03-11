@@ -108,6 +108,7 @@ const checkDomainsAndWarn = (domains: string[]): void => {
 
 export const load = (siteId: string, opts?: LoadOptions): void => {
   let tracker = document.createElement('script');
+
   let firstScript =
     document.getElementsByTagName('script')[0] ||
     document.querySelector('body');
@@ -117,6 +118,7 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
   tracker.setAttribute('data-site', siteId);
   tracker.src =
     opts && opts.url ? opts.url : 'https://cdn.usefathom.com/script.js';
+
   if (opts) {
     if (opts.auto !== undefined)
       tracker.setAttribute('data-auto', `${opts.auto}`);
@@ -221,7 +223,7 @@ export const enableTrackingForMe = (): void => {
 };
 
 /**
- * Checks if tracking is enabled for the current vistior
+ * Checks if tracking is enabled for the current visitor.
  */
 export const isTrackingEnabled = (): boolean => {
   const preferenceStorage: string | null = localStorage.getItem(
