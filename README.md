@@ -274,7 +274,7 @@ function TrackPageView() {
     if (!pathname) return;
 
     trackPageview({
-      url: pathname + searchParams.toString(),
+      url: pathname + searchParams?.toString(),
       referrer: document.referrer
     });
   }, [pathname, searchParams]);
@@ -306,7 +306,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head></head>
       <body>
         <Fathom />
-        <Page>{children}</Page>
+        {children}
       </body>
     </html>
   );
