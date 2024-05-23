@@ -306,7 +306,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head></head>
       <body>
         <Fathom />
-        <Page>{children}</Page>
+        {children}
       </body>
     </html>
   );
