@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-const Fathom = require('../dist/fathom-script');
+const Fathom = require('../dist/fathom-client');
 
 const fathomStub = () => {
   return {
