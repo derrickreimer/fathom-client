@@ -1,4 +1,4 @@
-interface Fathom {
+export interface Fathom {
   blockTrackingForMe: () => void;
   enableTrackingForMe: () => void;
   trackPageview: (opts?: PageViewOptions) => void;
@@ -7,17 +7,25 @@ interface Fathom {
   setSite: (id: string) => void;
 }
 
+/**
+ * @see https://usefathom.com/docs/script/script-advanced#api
+ */
 export type PageViewOptions = {
   url?: string;
   referrer?: string;
 };
 
+/**
+ * @see https://usefathom.com/docs/features/events
+ */
 export type EventOptions = {
   _value?: number;
   _site_id?: string;
 };
 
-// refer to https://usefathom.com/support/tracking-advanced
+/**
+ * @see https://usefathom.com/support/tracking-advanced
+ */
 export type LoadOptions = {
   url?: string;
   auto?: boolean;
@@ -39,7 +47,11 @@ type FathomCommand =
 declare global {
   interface Window {
     fathom?: Fathom;
+
+    /** @internal */
     __fathomClientQueue: FathomCommand[];
+    /** @internal */
+    __fathomIsLoading?: boolean;
   }
 }
 
@@ -57,7 +69,9 @@ const enqueue = (command: FathomCommand): void => {
  * Flushes the command queue.
  */
 const flushQueue = (): void => {
+  window.__fathomIsLoading = false;
   window.__fathomClientQueue = window.__fathomClientQueue || [];
+
   window.__fathomClientQueue.forEach(command => {
     switch (command.type) {
       case 'trackPageview':
@@ -85,13 +99,13 @@ const flushQueue = (): void => {
         return;
     }
   });
+
   window.__fathomClientQueue = [];
 };
 
 /**
- * Loops through list of domains and warns if they start with
- * http, https, http://, etc... as this does not work with the
- * Fathom script.
+ * Loops through list of domains and warns if they start with http, https,
+ * http://, etc... as this does not work with the Fathom script.
  *
  * @param domains - List of domains to check
  */
@@ -106,7 +120,20 @@ const checkDomainsAndWarn = (domains: string[]): void => {
   });
 };
 
+/**
+ * Loads the Fathom script.
+ *
+ * @param siteId - the id for the Fathom site.
+ * @param opts - advanced tracking options (https://usefathom.com/support/tracking-advanced)
+ */
 export const load = (siteId: string, opts?: LoadOptions): void => {
+  if (window.__fathomIsLoading || window.fathom) return;
+
+  // Mark that fathom is loading, so that we can prevent a race condition if
+  // `load` is called again BEFORE the fathom script finishes initializing (and
+  // so before `window.fathom` is actually defined)
+  window.__fathomIsLoading = true;
+
   let tracker = document.createElement('script');
 
   let firstScript =
@@ -199,7 +226,7 @@ export const trackEvent = (eventName: string, opts?: EventOptions) => {
 /**
  * Blocks tracking for the current visitor.
  *
- * See https://usefathom.com/docs/features/exclude
+ * @see https://usefathom.com/docs/features/exclude
  */
 export const blockTrackingForMe = (): void => {
   if (window.fathom) {
@@ -212,7 +239,7 @@ export const blockTrackingForMe = (): void => {
 /**
  * Enables tracking for the current visitor.
  *
- * See https://usefathom.com/docs/features/exclude
+ * @see https://usefathom.com/docs/features/exclude
  */
 export const enableTrackingForMe = (): void => {
   if (window.fathom) {

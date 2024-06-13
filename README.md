@@ -9,8 +9,6 @@ This library is a JavaScript client for [Fathom Analytics](https://usefathom.com
 
 Maintained with ♥️ by the [SavvyCal](https://savvycal.com/?utm_source=github&utm_medium=oss&utm_campaign=fathom-client) team
 
-[![sc-sticker](https://user-images.githubusercontent.com/341387/150855440-1a4122b4-b3c9-47b5-91ff-c0d73f421f84.svg)](https://savvycal.com/?utm_source=github&utm_medium=oss&utm_campaign=fathom-client)
-
 ## Installation
 
 Run the following to install in your project:
