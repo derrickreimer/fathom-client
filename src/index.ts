@@ -25,7 +25,7 @@ export type EventOptions = {
 
 /**
  * @see https://usefathom.com/support/tracking-advanced
- **/
+ */
 export type LoadOptions = {
   url?: string;
   auto?: boolean;
