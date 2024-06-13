@@ -72,7 +72,7 @@ const flushQueue = (): void => {
   window.__fathomIsLoading = false;
   window.__fathomClientQueue = window.__fathomClientQueue || [];
 
-  window.__fathomClientQueue.forEach(command => {
+  window.__fathomClientQueue.forEach((command) => {
     switch (command.type) {
       case 'trackPageview':
         trackPageview(command.opts);
@@ -112,10 +112,10 @@ const flushQueue = (): void => {
 const checkDomainsAndWarn = (domains: string[]): void => {
   const regex = /(https?)(?=:|\/|$)/; // matches http or https followed by
   // either a : or /
-  domains.forEach(domain => {
+  domains.forEach((domain) => {
     if (regex.exec(domain) !== null)
       console.warn(
-        `The include domain ${domain} might fail to work as intended as it begins with a transfer protocol (http://, https://). Consider removing the protocol portion of the string.`
+        `The include domain ${domain} might fail to work as intended as it begins with a transfer protocol (http://, https://). Consider removing the protocol portion of the string.`,
       );
   });
 };
@@ -157,14 +157,14 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
       checkDomainsAndWarn(opts.includedDomains);
       tracker.setAttribute(
         'data-included-domains',
-        opts.includedDomains.join(',')
+        opts.includedDomains.join(','),
       );
     }
     if (opts.excludedDomains) {
       checkDomainsAndWarn(opts.excludedDomains);
       tracker.setAttribute(
         'data-excluded-domains',
-        opts.excludedDomains.join(',')
+        opts.excludedDomains.join(','),
       );
     }
     if (opts.spa) tracker.setAttribute('data-spa', opts.spa);
@@ -254,7 +254,7 @@ export const enableTrackingForMe = (): void => {
  */
 export const isTrackingEnabled = (): boolean => {
   const preferenceStorage: string | null = localStorage.getItem(
-    'blockFathomTracking'
+    'blockFathomTracking',
   );
   return preferenceStorage !== null ? preferenceStorage !== 'true' : true;
 };

@@ -2,13 +2,16 @@
  * @jest-environment jsdom
  */
 
-import * as Fathom from '../src';
+const Fathom = require('../dist/fathom-script');
 
 const fathomStub = () => {
   return {
+    setSite: jest.fn(),
     trackPageview: jest.fn(),
     trackGoal: jest.fn(),
-    trackEvent: jest.fn()
+    trackEvent: jest.fn(),
+    blockTrackingForMe: jest.fn(),
+    enableTrackingForMe: jest.fn()
   };
 };
 
@@ -28,21 +31,21 @@ describe('load', () => {
   it('injects the Fathom script', () => {
     const firstScript = document.createElement('script');
     document.body.appendChild(firstScript);
-    Fathom.load();
+    Fathom.load('id');
 
     const fathomScript = document.getElementById('fathom-script');
-    expect(fathomScript.src).toBe('https://cdn.usefathom.com/script.js');
+    expect(fathomScript?.src).toBe('https://cdn.usefathom.com/script.js');
   });
 
   it('skips injecting the script if already loaded or currently loading', () => {
     // simulate the script already being loaded
-    Fathom.load();
+    Fathom.load('id');
     // ↓
     window.fathom = fathomStub();
 
     const firstScript = document.createElement('script');
     document.body.appendChild(firstScript);
-    Fathom.load();
+    Fathom.load('id');
 
     const fathomScripts = Array.from(
       document.getElementsByTagName('script')
@@ -54,7 +57,7 @@ describe('load', () => {
 
     // simulate 'onload' firing
     const fathomScript = document.getElementById('fathom-script');
-    fathomScript.dispatchEvent(new Event('load'));
+    fathomScript?.dispatchEvent(new Event('load'));
 
     expect(window.__fathomIsLoading).toBe(false);
   });
@@ -69,12 +72,12 @@ describe('load', () => {
     });
 
     const fathomScript = document.getElementById('fathom-script');
-    expect(fathomScript.src).toBe('https://bobheadxi.dev/fathom.js');
-    expect(fathomScript.getAttribute('data-included-domains')).toBe(
+    expect(fathomScript?.src).toBe('https://bobheadxi.dev/fathom.js');
+    expect(fathomScript?.getAttribute('data-included-domains')).toBe(
       'bobheadxi.dev'
     );
-    expect(fathomScript.getAttribute('data-auto')).toBe('false');
-    expect(fathomScript.getAttribute('data-honor-dnt')).toBe(null);
+    expect(fathomScript?.getAttribute('data-auto')).toBe('false');
+    expect(fathomScript?.getAttribute('data-honor-dnt')).toBe(null);
   });
 
   it('runs the queue after load', () => {
@@ -83,13 +86,13 @@ describe('load', () => {
     const firstScript = document.createElement('script');
     document.body.appendChild(firstScript);
 
-    Fathom.load();
+    Fathom.load('id');
     // ↓
     window.fathom = fathomStub();
 
     // simulate 'onload' firing
     const fathomScript = document.getElementById('fathom-script');
-    fathomScript.dispatchEvent(new Event('load'));
+    fathomScript?.dispatchEvent(new Event('load'));
 
     expect(window.fathom.trackPageview.mock.calls.length).toBe(1);
   });
