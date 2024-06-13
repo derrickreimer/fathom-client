@@ -4,8 +4,17 @@
 
 import * as Fathom from '../src';
 
+const fathomStub = () => {
+  return {
+    trackPageview: jest.fn(),
+    trackGoal: jest.fn(),
+    trackEvent: jest.fn()
+  };
+};
+
 beforeEach(() => {
   window.fathom = undefined;
+  delete window.__fathomIsLoading;
   delete window.__fathomClientQueue;
 });
 
@@ -23,6 +32,31 @@ describe('load', () => {
 
     const fathomScript = document.getElementById('fathom-script');
     expect(fathomScript.src).toBe('https://cdn.usefathom.com/script.js');
+  });
+
+  it('skips injecting the script if already loaded or currently loading', () => {
+    // simulate the script already being loaded
+    Fathom.load();
+    // ↓
+    window.fathom = fathomStub();
+
+    const firstScript = document.createElement('script');
+    document.body.appendChild(firstScript);
+    Fathom.load();
+
+    const fathomScripts = Array.from(
+      document.getElementsByTagName('script')
+    ).filter(s => {
+      return s.src == 'https://cdn.usefathom.com/script.js';
+    });
+
+    expect(fathomScripts.length).toBe(1);
+
+    // simulate 'onload' firing
+    const fathomScript = document.getElementById('fathom-script');
+    fathomScript.dispatchEvent(new Event('load'));
+
+    expect(window.__fathomIsLoading).toBe(false);
   });
 
   it('injects the Fathom script with options', () => {
@@ -46,15 +80,12 @@ describe('load', () => {
   it('runs the queue after load', () => {
     Fathom.trackPageview();
 
-    window.fathom = {
-      trackPageview: jest.fn(),
-      trackGoal: jest.fn(),
-      trackEvent: jest.fn()
-    };
-
     const firstScript = document.createElement('script');
     document.body.appendChild(firstScript);
+
     Fathom.load();
+    // ↓
+    window.fathom = fathomStub();
 
     // simulate 'onload' firing
     const fathomScript = document.getElementById('fathom-script');
