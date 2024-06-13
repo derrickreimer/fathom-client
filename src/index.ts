@@ -25,7 +25,7 @@ export type EventOptions = {
 
 /**
  * @see https://usefathom.com/support/tracking-advanced
- **/ 
+ **/
 export type LoadOptions = {
   url?: string;
   auto?: boolean;
@@ -122,7 +122,7 @@ const checkDomainsAndWarn = (domains: string[]): void => {
 
 /**
  * Loads the Fathom script.
- * 
+ *
  * @param siteId - the id for the Fathom site.
  * @param opts - advanced tracking options (https://usefathom.com/support/tracking-advanced)
  */
@@ -143,7 +143,8 @@ export const load = (siteId: string, opts?: LoadOptions): void => {
   tracker.id = 'fathom-script';
   tracker.async = true;
   tracker.setAttribute('data-site', siteId);
-  tracker.src = opts?.url || 'https://cdn.usefathom.com/script.js';
+  tracker.src =
+    opts && opts.url ? opts.url : 'https://cdn.usefathom.com/script.js';
 
   if (opts) {
     if (opts.auto !== undefined)
