@@ -24,7 +24,8 @@
   "main": "dist/fathom-client.cjs",
   "exports": {
     "import": "./dist/fathom-client.esm.js",
-    "require": "./dist/fathom-client.cjs"
+    "require": "./dist/fathom-client.cjs",
+    "types": "./types/index.d.ts"
   },
   "types": "types/index.d.ts",
   "scripts": {
