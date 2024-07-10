@@ -1,6 +1,6 @@
 {
   "name": "fathom-client",
-  "version": "3.7.1",
+  "version": "3.7.2",
   "description": "A simple wrapper around the Fathom Analytics library",
   "keywords": [
     "analytics"
