@@ -210,11 +210,51 @@ The `includedDomains` and `excludedDomains` options, while deprecated, are still
 
 This library is JavaScript framework-agnostic. Below are some usage examples with popular frameworks.
 
+### React Router
+
+If your React app uses [React Router](https://reactrouter.com/), use the `useLocation` hook to track pageviews on route changes:
+
+```jsx
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router';
+import * as Fathom from 'fathom-client';
+
+function FathomAnalytics() {
+  const location = useLocation();
+
+  useEffect(() => {
+    Fathom.load('MY_FATHOM_ID', {
+      auto: false,
+    });
+  }, []);
+
+  useEffect(() => {
+    Fathom.trackPageview({
+      url: location.pathname + location.search,
+      referrer: document.referrer,
+    });
+  }, [location.pathname, location.search]);
+
+  return null;
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <FathomAnalytics />
+      <Routes>{/* Your routes here */}</Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+> **Note:** If you are using React Router v6, replace `'react-router'` with `'react-router-dom'` in the imports above.
+>
+> **Tip:** If all your pageviews are being reported as `"/"`, you may need to set `canonical: false` in the `load` options. See [troubleshooting](https://usefathom.com/docs/troubleshooting/canonicals).
+
 ### Next.js
 
-#### Using `pages` directory (v12 and older)
-
-> If you are using the latest Next.js beta with the `app` directory, see the modified instructions below.
+#### Using Pages Router
 
 Create an `_app.js` file in your `pages` directory, [like this](https://nextjs.org/docs#custom-app):
 
@@ -244,7 +284,7 @@ function App({ Component, pageProps }) {
 export default App;
 ```
 
-#### Using the experimental `app` directory (v13)
+#### Using App Router
 
 Create a `Fathom` client component:
 
@@ -272,7 +312,7 @@ function TrackPageView() {
     if (!pathname) return;
 
     trackPageview({
-      url: pathname + searchParams?.toString(),
+      url: pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : ''),
       referrer: document.referrer
     });
   }, [pathname, searchParams]);
